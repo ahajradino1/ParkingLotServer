@@ -70,15 +70,15 @@ create table if not exists public.user_roles
 INSERT INTO public.roles (id, name) VALUES (1, 'ROLE_ADMIN') ON CONFLICT ON CONSTRAINT roles_pkey DO NOTHING;
 INSERT INTO public.roles (id, name) VALUES (2, 'ROLE_USER') ON CONFLICT ON CONSTRAINT roles_pkey DO NOTHING;
 
-INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
+INSERT INTO questions (id, created_at, updated_at, title) VALUES
 (1, '2020-04-25 14:45:36.674000','2020-03-24 14:45:36.674000',
  'What is your favourite animal?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
-INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
+INSERT INTO questions (id, created_at, updated_at, title) VALUES
 (2, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
  'What were the last four digits of your childhood telephone number?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
-INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
+INSERT INTO questions (id, created_at, updated_at, title) VALUES
 (3, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
  'In what town or city did you meet your spouse/partner?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
