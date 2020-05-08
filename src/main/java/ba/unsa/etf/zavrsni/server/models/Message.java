@@ -10,6 +10,8 @@ public class Message {
     private Long id;
     private String subject;
     private String content;
+
+
     public Message() {
     }
 
