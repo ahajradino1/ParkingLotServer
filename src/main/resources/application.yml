@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/postgres'
-    username: 'postgres'
-    password: 'ajsah'
+    url: jdbc:postgresql://ec2-34-195-169-25.compute-1.amazonaws.com:5432/dbo79klgl2iaml?user=wwcursuobmzbli&password=680518bf24ae699b1e4e1a0b889e8dc708cdb077b4bb1b0d67166c7c0b75665c&sslmode=require
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     properties:
       hibernate:
