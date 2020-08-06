@@ -109,3 +109,4 @@ INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
 (10, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
  'What was the house number and street name you lived in as a child?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+
