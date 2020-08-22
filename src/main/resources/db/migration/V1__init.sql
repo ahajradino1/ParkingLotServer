@@ -8,6 +8,7 @@ create table if not exists public.questions
     description text,
     title       varchar(100)
 );
+
 create table if not exists public.roles
 (
     id   bigserial not null
@@ -67,6 +68,44 @@ create table if not exists public.user_roles
         primary key (user_id, role_id)
 );
 
+create table if not exists public.banks
+(
+    id bigint not null constraint banks_pkey primary key,
+    bank_name varchar(255)
+);
+
+create table if not exists public.bank_accounts
+(
+    id bigint not null constraint bank_accounts_pkey primary key,
+    created_at timestamp not null,
+    updated_at timestamp not null,
+    account_owner text,
+    balance double precision not null constraint bank_accounts_balance_check check (balance >= (0)::double precision ),
+    card_number text,
+    cvc text,
+    expiry_date timestamp not null,
+    bank_id bigint not null constraint fk8ngd2pjw12xdt5wasywldwjy3 references banks on delete cascade
+);
+
+create table if not exists public.bank_account_users
+(
+    id bigint not null constraint bank_account_users_pkey primary key,
+    application_user_id bigint not null constraint fkjvnkuxpowqf9445fnwobvub83 references application_users on delete cascade,
+    bank_account_id bigint not null constraint uk_emykmc2ulup7oy6tje2l4u1vx unique constraint fk74pijj9nly4jh4lu9pauqjwmy references bank_accounts on delete cascade
+);
+
+create table if not exists public.parking_lots
+(
+    id bigint not null constraint parking_lots_pkey primary key,
+    created_at timestamp not null,
+    updated_at timestamp not null,
+    zone_code text,
+    address text,
+    free_spots integer,
+    price double,
+    max_stoptime integer
+);
+
 INSERT INTO public.roles (id, name) VALUES (1, 'ROLE_ADMIN') ON CONFLICT ON CONSTRAINT roles_pkey DO NOTHING;
 INSERT INTO public.roles (id, name) VALUES (2, 'ROLE_USER') ON CONFLICT ON CONSTRAINT roles_pkey DO NOTHING;
 
@@ -109,4 +148,25 @@ INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
 (10, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
  'What was the house number and street name you lived in as a child?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+
+INSERT INTO public.banks (id, bank_name) VALUES (1, 'UniCredit Bank') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
+INSERT INTO public.banks (id, bank_name) VALUES (2, 'Raiffeisen Bank') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
+INSERT INTO public.banks (id, bank_name) VALUES (3, 'Sparkasse Bank') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
+INSERT INTO public.banks (id, bank_name) VALUES (4, 'Sberbank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
+INSERT INTO public.banks (id, bank_name) VALUES (5, 'ZiraatBank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
+
+INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
+(1, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "101", "Džemala Bijedića 101", 20, 2.5, 300);
+
+INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
+(2, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "102", "Zmaja od Bosne 20", 20, 2.5, 300);
+
+INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
+(3, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "103", "Džemala Čelića 44", 20, 2.5, 300);
+
+INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
+(4, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "104", "Neka ulica", 20, 2.5, 300);
+
+INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
+(5, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "105", "Neka druga ulica", 20, 2.5, 240);
 

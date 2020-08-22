@@ -52,10 +52,11 @@ public class BankAccount extends AuditModel {
 
     }
 
-    public BankAccount(String accountOwner, String cvc, String cardNumber, Double balance){
+    public BankAccount(String accountOwner, String cvc, String cardNumber, Date expiryDate, Double balance){
         this.accountOwner = accountOwner;
         this.cvc = cvc;
         this.cardNumber = cardNumber;
+        this.expiryDate = expiryDate;
         this.balance = balance;
     }
 

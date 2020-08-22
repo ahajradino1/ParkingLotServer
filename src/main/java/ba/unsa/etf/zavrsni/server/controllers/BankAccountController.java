@@ -2,6 +2,7 @@ package ba.unsa.etf.zavrsni.server.controllers;
 
 import ba.unsa.etf.zavrsni.server.exceptions.ResourceNotFoundException;
 import ba.unsa.etf.zavrsni.server.models.ApplicationUser;
+import ba.unsa.etf.zavrsni.server.models.Bank;
 import ba.unsa.etf.zavrsni.server.models.BankAccount;
 import ba.unsa.etf.zavrsni.server.models.BankAccountUser;
 import ba.unsa.etf.zavrsni.server.requests.BankAccountRequest;
@@ -12,6 +13,7 @@ import ba.unsa.etf.zavrsni.server.security.UserPrincipal;
 import ba.unsa.etf.zavrsni.server.service.ApplicationUserService;
 import ba.unsa.etf.zavrsni.server.service.BankAccountService;
 import ba.unsa.etf.zavrsni.server.service.BankAccountUserService;
+import ba.unsa.etf.zavrsni.server.service.BankService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +25,14 @@ import java.util.List;
 public class BankAccountController {
     private final BankAccountUserService bankAccountUserService;
     private final BankAccountService bankAccountService;
+    private final BankService bankService;
     private final ApplicationUserService applicationUserService;
     private final PasswordEncoder passwordEncoder;
 
-    public BankAccountController(BankAccountUserService bankAccountUserService, BankAccountService bankAccountService, ApplicationUserService applicationUserService, PasswordEncoder passwordEncoder) {
+    public BankAccountController(BankAccountUserService bankAccountUserService, BankAccountService bankAccountService, BankService bankService, ApplicationUserService applicationUserService, PasswordEncoder passwordEncoder) {
         this.bankAccountUserService = bankAccountUserService;
         this.bankAccountService = bankAccountService;
+        this.bankService = bankService;
         this.applicationUserService = applicationUserService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -44,11 +48,10 @@ public class BankAccountController {
 
 //        if(bankAccounts.isEmpty())
 //            throw new ResourceNotFoundException("Bank account is not valid!");
-
-        if(!bankAccountUserService.findAllByBankAccount_CardNumber(bankAccounts.get(0).getCardNumber()).isEmpty())
+        if(!bankAccounts.isEmpty() && !bankAccountUserService.findAllByBankAccount_CardNumber(bankAccounts.get(0).getCardNumber()).isEmpty())
             throw new ResourceNotFoundException("Bank account is in use!");
 
-        BankAccount account = bankAccounts.get(0);
+  //      BankAccount account = bankAccounts.get(0);
         //entered cvc doesn't math encrypted cvc in database
 //        if (!passwordEncoder.matches(bankAccountRequest.getCvc(), account.getCvc())){
 //            throw new ResourceNotFoundException("Bank account is not valid!");
@@ -60,10 +63,22 @@ public class BankAccountController {
         BankAccountUser bankAccountUser = new BankAccountUser();
         ApplicationUser user = new ApplicationUser();
         user.setId(currentUser.getId());
-        bankAccountUser.setBankAccount(bankAccounts.get(0));
+     //   bankAccountUser.setBankAccount(bankAccounts.get(0));
+
+        //sad mi treba id banke koja je dio zahtjeva
+
+
+        BankAccount addedAcc = new BankAccount(bankAccountRequest.getAccountOwner(), bankAccountRequest.getCvc(), bankAccountRequest.getCardNumber(), bankAccountRequest.getExpiryDate(), 5000.0);
+        addedAcc.setCvc(passwordEncoder.encode(bankAccountRequest.getCvc()));
+        Bank bank = bankService.find(bankAccountRequest.getBankName());
+        if(bank != null)
+            addedAcc.setBank(bank);
+
+        bankAccountUser.setBankAccount(addedAcc);
         bankAccountUser.setApplicationUser(user);
+        bankAccountService.save(addedAcc);
         bankAccountUserService.save(bankAccountUser);
-        bankAccountService.save(new BankAccount(bankAccountRequest.getAccountOwner(), bankAccountRequest.getCvc(), bankAccountRequest.getCardNumber(), 5000.0));
+
         return new BankAccountManageResponse(true, "Succefully added account");
     }
 
