@@ -55,6 +55,7 @@ public class RegistrationPlateController {
             return new BankAccountManageResponse(false, "Registration plates don't exist!");
         }
         registrationPlateUserService.delete(platesId);
+        registrationPlateService.delete(platesId);
         return new BankAccountManageResponse(true, "Successful deletion!");
     }
 }

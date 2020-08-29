@@ -14,7 +14,7 @@ public class BankAccountRequest {
     private String bankName;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "dd.MM.yyyy", timezone = "Europe/Sarajevo")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Sarajevo")
     private Date expiryDate;
 
     //todo mogu izbrisati ove validacije jer postoje na frontendu

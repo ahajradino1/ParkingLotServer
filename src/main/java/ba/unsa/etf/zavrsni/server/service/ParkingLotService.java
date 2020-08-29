@@ -19,4 +19,7 @@ public class ParkingLotService {
     }
 
 
+    public ParkingLot findById(Long parkingLotId) {
+        return parkingLotRepository.findById(parkingLotId).get();
+    }
 }

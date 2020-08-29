@@ -33,7 +33,7 @@ public class BankAccount extends AuditModel {
     private Bank bank;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "expiry_date", nullable = false, updatable = false)
     private Date expiryDate;
 

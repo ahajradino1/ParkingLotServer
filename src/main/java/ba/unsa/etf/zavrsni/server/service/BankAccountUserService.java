@@ -4,6 +4,8 @@ import ba.unsa.etf.zavrsni.server.models.BankAccount;
 import ba.unsa.etf.zavrsni.server.models.BankAccountUser;
 import ba.unsa.etf.zavrsni.server.repositories.BankAccountUserRepository;
 import ba.unsa.etf.zavrsni.server.responses.BankAccountDataResponse;
+import ba.unsa.etf.zavrsni.server.responses.PaymentResponse;
+import ba.unsa.etf.zavrsni.server.util.PaymentStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,5 +51,35 @@ public class BankAccountUserService {
 
     public BankAccountUser findBankAccountUserByIdAndApplicationUserId(Long bankAccountUserId, Long applicationUserId) {
         return bankAccountUserRepository.findByIdAndApplicationUser_Id(bankAccountUserId,applicationUserId);
+    }
+
+    public PaymentResponse getPaymentResult(Long accId, Long userId, double amountToPay) {
+        if (!existsByIdAndUserId(accId, userId))
+            return new PaymentResponse(PaymentStatus.CANCELED, "This account does not belong to this user!");
+
+        BankAccountUser bankAccountUser;
+        bankAccountUser = findBankAccountUserById(accId);
+        double totalMoney = bankAccountUser.getBankAccount().getBalance();
+
+        if (totalMoney < amountToPay)
+            return new PaymentResponse(PaymentStatus.INSUFFICIENT_FUNDS, "Not enough money to pay!");
+
+        totalMoney = totalMoney - amountToPay;
+        bankAccountUser.getBankAccount().setBalance(totalMoney);
+        save(bankAccountUser);
+        return new PaymentResponse(PaymentStatus.PAID, "Payment successful!");
+    }
+
+    public PaymentResponse checkBalanceForPayment(Long accId, Long userId, double amountToPay) {
+        if (!existsByIdAndUserId(accId, userId))
+            return new PaymentResponse(PaymentStatus.CANCELED, "This account does not belong to this user!");
+
+        BankAccountUser bankAccountUser=findBankAccountUserById(accId);
+        double totalMoney = bankAccountUser.getBankAccount().getBalance();
+
+        if (totalMoney < amountToPay)
+            return new PaymentResponse(PaymentStatus.INSUFFICIENT_FUNDS, "Not enough money to pay!");
+
+        return new PaymentResponse(PaymentStatus.SUFFICIENT_FUNDS, "You have enough funds to pay this receipt!");
     }
 }

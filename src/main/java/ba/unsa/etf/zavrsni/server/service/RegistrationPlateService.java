@@ -22,4 +22,12 @@ public class RegistrationPlateService {
     public RegistrationPlate save(RegistrationPlate registrationPlate) {
         return registrationPlateRepository.save(registrationPlate);
     }
+
+    public void delete(Long plateId) {
+        registrationPlateRepository.deleteById(plateId);
+    }
+
+    public RegistrationPlate findById(Long registrationPlateId) {
+        return registrationPlateRepository.findById(registrationPlateId).get();
+    }
 }

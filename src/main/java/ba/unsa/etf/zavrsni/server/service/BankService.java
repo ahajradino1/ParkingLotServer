@@ -4,6 +4,8 @@ import ba.unsa.etf.zavrsni.server.models.Bank;
 import ba.unsa.etf.zavrsni.server.repositories.BankRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BankService {
     public BankRepository bankRepository;
@@ -18,5 +20,9 @@ public class BankService {
 
     public Bank save(Bank bank) {
         return bankRepository.save(bank);
+    }
+
+    public List<Bank> findAll() {
+        return bankRepository.findAll();
     }
 }

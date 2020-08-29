@@ -1,6 +1,7 @@
 package ba.unsa.etf.zavrsni.server.security;
 
 import ba.unsa.etf.zavrsni.server.models.ApplicationUser;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +16,7 @@ public class UserPrincipal implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
+
     private String username;
 
     @JsonIgnore
@@ -57,7 +59,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override

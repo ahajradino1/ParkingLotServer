@@ -1,12 +1,11 @@
 create table if not exists public.questions
 (
-    id          bigint    not null
+    id         bigint    not null
         constraint questions_pkey
             primary key,
-    created_at  timestamp not null,
-    updated_at  timestamp not null,
-    description text,
-    title       varchar(100)
+    created_at timestamp not null,
+    updated_at timestamp not null,
+    title      varchar(100)
 );
 
 create table if not exists public.roles
@@ -70,40 +69,117 @@ create table if not exists public.user_roles
 
 create table if not exists public.banks
 (
-    id bigint not null constraint banks_pkey primary key,
+    id        bigint not null
+        constraint banks_pkey
+            primary key,
     bank_name varchar(255)
 );
 
 create table if not exists public.bank_accounts
 (
-    id bigint not null constraint bank_accounts_pkey primary key,
-    created_at timestamp not null,
-    updated_at timestamp not null,
+    id            bigint           not null
+        constraint bank_accounts_pkey
+            primary key,
+    created_at    timestamp        not null,
+    updated_at    timestamp        not null,
     account_owner text,
-    balance double precision not null constraint bank_accounts_balance_check check (balance >= (0)::double precision ),
-    card_number text,
-    cvc text,
-    expiry_date timestamp not null,
-    bank_id bigint not null constraint fk8ngd2pjw12xdt5wasywldwjy3 references banks on delete cascade
+    balance       double precision not null
+        constraint bank_accounts_balance_check
+            check (balance >= (0)::double precision),
+    card_number   text,
+    cvc           text,
+    expiry_date   timestamp        not null,
+    bank_id       bigint           not null
+        constraint fk8ngd2pjw12xdt5wasywldwjy3
+            references banks
+            on delete cascade
 );
 
-create table if not exists public.bank_account_users
+create table bank_account_users
 (
-    id bigint not null constraint bank_account_users_pkey primary key,
-    application_user_id bigint not null constraint fkjvnkuxpowqf9445fnwobvub83 references application_users on delete cascade,
-    bank_account_id bigint not null constraint uk_emykmc2ulup7oy6tje2l4u1vx unique constraint fk74pijj9nly4jh4lu9pauqjwmy references bank_accounts on delete cascade
+    id                  bigint not null
+        constraint bank_account_users_pkey
+            primary key,
+    application_user_id bigint not null
+        constraint fkjvnkuxpowqf9445fnwobvub83
+            references application_users
+            on delete cascade,
+    bank_account_id     bigint not null
+        constraint uk_emykmc2ulup7oy6tje2l4u1vx
+            unique
+        constraint fk74pijj9nly4jh4lu9pauqjwmy
+            references bank_accounts
+            on delete cascade
+);
+
+create table if not exists public.registration_plates
+(
+    id                  bigint    not null
+        constraint registration_plates_pkey
+            primary key,
+    created_at          timestamp not null,
+    updated_at          timestamp not null,
+    registration_number text
+);
+
+create table if not exists public.registration_plate_users
+(
+    id                    bigint not null
+        constraint registration_plate_users_pkey
+            primary key,
+    application_user_id   bigint not null
+        constraint fk55fv97xf2wi17rd9ebpij1ykg
+            references application_users
+            on delete cascade,
+    registration_plate_id bigint not null
+        constraint uk_n83289s9lv1ler2oeqleolsab
+            unique
+        constraint fksgq4y9f7wbsuqcvel6sgfei4g
+            references registration_plates
+            on delete cascade
 );
 
 create table if not exists public.parking_lots
 (
-    id bigint not null constraint parking_lots_pkey primary key,
-    created_at timestamp not null,
-    updated_at timestamp not null,
-    zone_code text,
-    address text,
-    free_spots integer,
-    price double,
-    max_stoptime integer
+    id           bigint    not null
+        constraint parking_lots_pkey
+            primary key,
+    created_at   timestamp not null,
+    updated_at   timestamp not null,
+    address      text,
+    free_spots   integer,
+    max_stoptime integer,
+    price        double precision,
+    zone_code    text
+);
+
+create table if not exists public.tickets
+(
+    id                    uuid             not null
+        constraint tickets_pkey
+            primary key,
+    created_at            timestamp        not null,
+    updated_at            timestamp        not null,
+    ending_time           timestamp,
+    payment_status        integer,
+    price                 double precision not null,
+    starting_time         timestamp,
+    application_user_id   bigint           not null
+        constraint fki8o7cv5hoj5enun0tkl0ahg98
+            references application_users
+            on delete cascade,
+    bank_account_id       bigint
+        constraint fkdbxpai6gx3h3ygnsghp5h52vu
+            references bank_accounts
+            on delete cascade,
+    parking_lot_id        bigint           not null
+        constraint fk9v3xuemj2fec004mgmj2vb6br
+            references parking_lots
+            on delete cascade,
+    registration_plate_id bigint           not null
+        constraint fk65kqc6j3is924ekr0eftjtnuf
+            references registration_plates
+            on delete cascade
 );
 
 INSERT INTO public.roles (id, name) VALUES (1, 'ROLE_ADMIN') ON CONFLICT ON CONSTRAINT roles_pkey DO NOTHING;
@@ -155,18 +231,16 @@ INSERT INTO public.banks (id, bank_name) VALUES (3, 'Sparkasse Bank') ON CONFLIC
 INSERT INTO public.banks (id, bank_name) VALUES (4, 'Sberbank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
 INSERT INTO public.banks (id, bank_name) VALUES (5, 'ZiraatBank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
-(1, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "101", "Džemala Bijedića 101", 20, 2.5, 300);
+INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
+(1, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Džemala Bijedića 101', 20, 300, 2.5, '101');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
-(2, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "102", "Zmaja od Bosne 20", 20, 2.5, 300);
+INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
+(2, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Zmaja od Bosne 20', 20, 300, 2.5, '102');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
-(3, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "103", "Džemala Čelića 44", 20, 2.5, 300);
+INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
+(3, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Neka ulica 12', 20, 300, 2.5, '103');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
-(4, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "104", "Neka ulica", 20, 2.5, 300);
+INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
+(4, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Jos neka ulica 34', 20, 300, 2.5, '104');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, zone_code, address, free_spots, price, max_stoptime) VALUES
-(5, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', "105", "Neka druga ulica", 20, 2.5, 240);
 
