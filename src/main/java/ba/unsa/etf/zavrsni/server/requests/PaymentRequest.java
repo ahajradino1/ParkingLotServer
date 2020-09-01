@@ -19,11 +19,11 @@ public class PaymentRequest {
     private Long registrationPlateId;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Sarajevo")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Europe/Sarajevo")
     private Date startingTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Sarajevo")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Europe/Sarajevo")
     private Date endingTime;
 
     @NotNull

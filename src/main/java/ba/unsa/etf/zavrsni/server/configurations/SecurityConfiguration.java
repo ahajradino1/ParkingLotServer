@@ -92,7 +92,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "webjars/**",
                         "/v2/api-docs")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/**", "/questions")
+                .antMatchers(HttpMethod.GET, "/api/users/**", "/questions", "/parkinglots/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

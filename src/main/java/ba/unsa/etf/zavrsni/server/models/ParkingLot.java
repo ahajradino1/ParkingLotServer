@@ -19,26 +19,30 @@ public class ParkingLot extends AuditModel {
     private String zoneCode;
 
     @Column(columnDefinition = "text")
-    private String address;
+    private String streetAddress;
 
-    @Column(name = "free_spots")
-    private int freeSpots;
+    @Column(columnDefinition = "text")
+    private String municipality;
+
+    @Column(columnDefinition = "text")
+    private String workDays;
+
+    @Column(columnDefinition = "text")
+    private String workTime;
 
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "max_stoptime")
-    private int maxStoptime; //in minutes
-
     public ParkingLot() {
     }
 
-    public ParkingLot(String zoneCode, String address, int freeSpots, Double price, int maxStoptime) {
+    public ParkingLot(String zoneCode, String streetAddress, String municipality, String workDays, String workTime, Double price) {
         this.zoneCode = zoneCode;
-        this.address = address;
-        this.freeSpots = freeSpots;
+        this.streetAddress = streetAddress;
+        this.municipality = municipality;
+        this.workDays = workDays;
+        this.workTime = workTime;
         this.price = price;
-        this.maxStoptime = maxStoptime;
     }
 
     public Long getId() {
@@ -57,20 +61,36 @@ public class ParkingLot extends AuditModel {
         this.zoneCode = zoneCode;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreetAddress() {
+        return streetAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
-    public int getFreeSpots() {
-        return freeSpots;
+    public String getMunicipality() {
+        return municipality;
     }
 
-    public void setFreeSpots(int freeSpots) {
-        this.freeSpots = freeSpots;
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
+    }
+
+    public String getWorkDays() {
+        return workDays;
+    }
+
+    public void setWorkDays(String workDays) {
+        this.workDays = workDays;
+    }
+
+    public String getWorkTime() {
+        return workTime;
+    }
+
+    public void setWorkTime(String workTime) {
+        this.workTime = workTime;
     }
 
     public Double getPrice() {
@@ -79,22 +99,6 @@ public class ParkingLot extends AuditModel {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public int getMaxStoptime() {
-        return maxStoptime;
-    }
-
-    public void setMaxStoptime(int maxStoptime) {
-        this.maxStoptime = maxStoptime;
-    }
-
-    public void freeParkingSpot() {
-        freeSpots++;
-    }
-
-    public void takeParkingSpot() {
-        freeSpots--;
     }
 
 }

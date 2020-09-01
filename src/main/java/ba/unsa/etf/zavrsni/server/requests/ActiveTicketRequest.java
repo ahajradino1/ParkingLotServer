@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class ActiveTicketRequest {
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern="dd.MM.yyyy HH:mm",timezone="Europe/Sarajevo", lenient = OptBoolean.FALSE)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone="Europe/Sarajevo")
     private Date currentDate;
 
     public ActiveTicketRequest() {

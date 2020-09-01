@@ -146,9 +146,10 @@ create table if not exists public.parking_lots
             primary key,
     created_at   timestamp not null,
     updated_at   timestamp not null,
-    address      text,
-    free_spots   integer,
-    max_stoptime integer,
+    street_address      text,
+    municipality       text,
+    work_days     text,
+    work_time     text,
     price        double precision,
     zone_code    text
 );
@@ -231,16 +232,16 @@ INSERT INTO public.banks (id, bank_name) VALUES (3, 'Sparkasse Bank') ON CONFLIC
 INSERT INTO public.banks (id, bank_name) VALUES (4, 'Sberbank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
 INSERT INTO public.banks (id, bank_name) VALUES (5, 'ZiraatBank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
-(1, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Džemala Bijedića 101', 20, 300, 2.5, '101');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
+(1, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Džemala Bijedića 101', 'Novi Grad', 'Every day', '00:00-24:00', 2.5, '101');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
-(2, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Zmaja od Bosne 20', 20, 300, 2.5, '102');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
+(2, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Zmaja od Bosne 20', 'Novi Grad', 'Mon-Fri', '08:00-16:00', 2.5, '102');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
-(3, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Neka ulica 12', 20, 300, 2.5, '103');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
+(3, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Neka ulica 12', 'Ilidza', 'Mon-Wed', '07:00-22:00', 1.5, '103');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, address, free_spots, max_stoptime, price, zone_code) VALUES
-(4, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Jos neka ulica 34', 20, 300, 2.5, '104');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
+(4, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Jos neka ulica 34', 'Stari Grad', 'Every day', '06:00-18:00', 2.0, '104');
 
 

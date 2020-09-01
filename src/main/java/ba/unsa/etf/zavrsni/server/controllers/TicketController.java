@@ -28,7 +28,7 @@ public class TicketController {
         return ticketService.findAllTicketsByApplicationUserId(currentUser.getId());
     }
 
-    //those are tickets for currently parked car
+    //those are tickets for currently parked cars
     @PostMapping("/active")
     public List<TicketDataResponse> getActiveTickets(@Valid @RequestBody ActiveTicketRequest activeTicketRequest, @CurrentUser UserPrincipal currentUser) {
         //todo no need for validation - i'll validate on frontend

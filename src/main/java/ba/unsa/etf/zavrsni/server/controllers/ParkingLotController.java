@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/parkinglots")
 public class ParkingLotController {
+
     private final ParkingLotService parkingLotService;
 
     public ParkingLotController(ParkingLotService parkingLotService) {

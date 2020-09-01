@@ -7,7 +7,6 @@ import ba.unsa.etf.zavrsni.server.repositories.TicketRepository;
 import ba.unsa.etf.zavrsni.server.responses.TicketDataResponse;
 import ba.unsa.etf.zavrsni.server.util.PaymentStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -26,7 +25,7 @@ public class TicketService {
     }
 
     public List<TicketDataResponse> findAllTicketsByUserAndDate(Long userId, Date currentDate) {
-        return getTicketData(ticketRepository.findByApplicationUser_IdAndCreatedAtAndPaymentStatus(userId, currentDate, PaymentStatus.PAID));
+        return getTicketData(ticketRepository.getAllActive(userId, currentDate, PaymentStatus.PAID));
     }
 
     private List<TicketDataResponse> getTicketData(List<Ticket> ticketList) {
