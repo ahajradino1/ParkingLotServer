@@ -65,7 +65,6 @@ public class BankAccountController {
         user.setId(currentUser.getId());
      //   bankAccountUser.setBankAccount(bankAccounts.get(0));
 
-        //sad mi treba id banke koja je dio zahtjeva
 
 
         BankAccount addedAcc = new BankAccount(bankAccountRequest.getAccountOwner(), bankAccountRequest.getCvc(), bankAccountRequest.getCardNumber(), bankAccountRequest.getExpiryDate(), 5000.0);
