@@ -11,9 +11,9 @@ public class TicketDataResponse {
     private String cardNumber;
     private String registrationNumber;
     private ParkingLot parkingLot;
-    @JsonFormat(timezone = "Europe/Sarajevo")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Europe/Sarajevo")
     private Date startingTime;
-    @JsonFormat(timezone = "Europe/Sarajevo")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Europe/Sarajevo")
     private Date endingTime;
     private Double price;
 

@@ -31,9 +31,12 @@ public class TicketController {
     //those are tickets for currently parked cars
     @PostMapping("/active")
     public List<TicketDataResponse> getActiveTickets(@Valid @RequestBody ActiveTicketRequest activeTicketRequest, @CurrentUser UserPrincipal currentUser) {
-        //todo no need for validation - i'll validate on frontend
-        //if(activeTicketRequest.getCurrentDate() == null)
-        //throw new BadRequestException("Request not valid!");
         return ticketService.findAllTicketsByUserAndDate(currentUser.getId(), activeTicketRequest.getCurrentDate());
+    }
+
+    //list of active tickets for certain car
+    @PostMapping("/active/{registrationPlateId}")
+    public List<TicketDataResponse> getActiveTicketsForCar(@PathVariable Long registrationPlateId, @Valid @RequestBody ActiveTicketRequest activeTicketRequest, @CurrentUser UserPrincipal currentUser) {
+        return ticketService.findAllTicketsByUserAndDateAndRegNo(currentUser.getId(), activeTicketRequest.getCurrentDate(), registrationPlateId);
     }
 }

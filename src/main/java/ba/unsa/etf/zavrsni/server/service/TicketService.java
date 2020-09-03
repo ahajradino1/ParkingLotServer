@@ -28,6 +28,10 @@ public class TicketService {
         return getTicketData(ticketRepository.getAllActive(userId, currentDate, PaymentStatus.PAID));
     }
 
+    public List<TicketDataResponse> findAllTicketsByUserAndDateAndRegNo(Long userId, Date currentDate, Long regPlateId) {
+        return getTicketData(ticketRepository.getAllActiveForCar(userId, currentDate, regPlateId, PaymentStatus.PAID));
+    }
+
     private List<TicketDataResponse> getTicketData(List<Ticket> ticketList) {
         return ticketList
                 .stream()
