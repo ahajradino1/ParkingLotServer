@@ -1,10 +1,10 @@
 package ba.unsa.etf.zavrsni.server.responses;
 
-public class BankAccountManageResponse {
+public class BankAccountPlateManageResponse {
     private Boolean success;
     private String text;
 
-    public BankAccountManageResponse(Boolean success, String text) {
+    public BankAccountPlateManageResponse(Boolean success, String text) {
         this.success = success;
         this.text = text;
     }

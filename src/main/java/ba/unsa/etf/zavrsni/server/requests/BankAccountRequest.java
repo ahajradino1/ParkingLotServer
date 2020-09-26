@@ -17,8 +17,6 @@ public class BankAccountRequest {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Sarajevo")
     private Date expiryDate;
 
-    //todo mogu izbrisati ove validacije jer postoje na frontendu
-
     @Length(min = 3, max = 3)
     @CardValidation(message = "Card validation code is not valid!")
     private String cvc;

@@ -148,8 +148,6 @@ create table if not exists public.parking_lots
     updated_at   timestamp not null,
     street_address      text,
     municipality       text,
-    work_days     text,
-    work_time     text,
     price        double precision,
     zone_code    text
 );
@@ -183,48 +181,52 @@ create table if not exists public.tickets
             on delete cascade
 );
 
+create table if not exists public.money_receivers
+(
+    id              bigint not null
+        constraint money_receivers_pkey
+            primary key,
+    name   text,
+    bank_account_id bigint not null
+        constraint uk_152q4yt6b8fl64q061cp8e666
+            unique
+        constraint fk3stbkqegk8a9q5qom2xwqhpvq
+            references bank_accounts
+            on delete cascade
+);
+
 INSERT INTO public.roles (id, name) VALUES (1, 'ROLE_ADMIN') ON CONFLICT ON CONSTRAINT roles_pkey DO NOTHING;
 INSERT INTO public.roles (id, name) VALUES (2, 'ROLE_USER') ON CONFLICT ON CONSTRAINT roles_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(1, '2020-04-25 14:45:36.674000','2020-03-24 14:45:36.674000',
- 'What is your favourite animal?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(1, '2020-04-25 14:45:36.674000','2020-03-24 14:45:36.674000', 'What is your favourite animal?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(2, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'What were the last four digits of your childhood telephone number?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(2, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'What were the last four digits of your childhood telephone number?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(3, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'In what town or city did you meet your spouse/partner?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(3, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'In what town or city did you meet your spouse/partner?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(4, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'In what town or city was your first full time job?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(4, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'In what town or city was your first full time job?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(5, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'What are the last five digits of your drivers licence number?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(5, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'What are the last five digits of your drivers licence number?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(6, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'What is your grandmothers (on your mothers side) maiden name?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(6, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'What is your grandmothers (on your mothers side) maiden name?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(7, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'What is your spouse or partners mothers maiden name?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(7, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'What is your spouse or partners mothers maiden name?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(8, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'What time of the day were you born? (hh:mm)') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(8, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'What time of the day were you born? (hh:mm)') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(9, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'What time of the day was your first child born? (hh:mm)') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(9, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'What time of the day was your first child born? (hh:mm)') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.questions (id, created_at, updated_at, title) VALUES
-(10, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000',
- 'What was the house number and street name you lived in as a child?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
+(10, '2020-04-25 14:45:36.674000','2020-04-25 14:45:36.674000', 'What was the house number and street name you lived in as a child?') ON CONFLICT ON CONSTRAINT questions_pkey DO NOTHING;
 
 INSERT INTO public.banks (id, bank_name) VALUES (1, 'UniCredit Bank') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
 INSERT INTO public.banks (id, bank_name) VALUES (2, 'Raiffeisen Bank') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
@@ -232,16 +234,34 @@ INSERT INTO public.banks (id, bank_name) VALUES (3, 'Sparkasse Bank') ON CONFLIC
 INSERT INTO public.banks (id, bank_name) VALUES (4, 'Sberbank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
 INSERT INTO public.banks (id, bank_name) VALUES (5, 'ZiraatBank BH') ON CONFLICT ON CONSTRAINT banks_pkey DO NOTHING;
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
-(1, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Džemala Bijedića 101', 'Novi Grad', 'Every day', '00:00-24:00', 2.5, '101');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
-(2, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Zmaja od Bosne 20', 'Novi Grad', 'Mon-Fri', '08:00-16:00', 2.5, '102');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, price, zone_code) VALUES
+(1, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Džemala Bijedića 101', 'Novi Grad', 2.5, '101');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, price, zone_code) VALUES
+(2, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Zmaja od Bosne 20', 'Novi Grad', 2.5, '102');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, price, zone_code) VALUES
+(3, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Majdanska BB', 'Novi Grad', 1.5, '103');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, price, zone_code) VALUES
+(4, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Franje Račkog BB', 'Centar', 2.0, '104');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, price, zone_code) VALUES
+(5, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Porodice Ribar 35', 'Novo Sarajevo', 2.0, '105');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, price, zone_code) VALUES
+(6, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Obala Kulina bana 9', 'Centar', 2.5, '106');
+INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, price, zone_code) VALUES
+(7, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Safvet-bega Bašagića 34', 'Stari Grad', 1.5, '107');
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
-(3, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Neka ulica 12', 'Ilidza', 'Mon-Wed', '07:00-22:00', 1.5, '103');
+INSERT INTO public.bank_accounts (id, created_at, updated_at, account_owner, card_number, cvc, expiry_date, balance, bank_id) VALUES
+(1, '2020-08-20 14:45:36.674000', '2020-08-20 14:45:36.674000', 'Ajsa Hajradinovic', '1111111111111111', '$2a$10$ZNYHai/hEuQGQJn.vr3mnOuDglwuerhTILotfBrrMMVIPPuoBbdG.', '2023-03-25 14:45:36.674000', '1000.00', 1) ON CONFLICT ON CONSTRAINT bank_accounts_pkey DO NOTHING;
+INSERT INTO public.bank_accounts (id, created_at, updated_at, account_owner, card_number, cvc, expiry_date, balance, bank_id) VALUES
+(2, '2020-08-20 14:45:36.674000', '2020-08-20 14:45:36.674000', 'Ajsa Hajradinovic','1111111111111112', '$2a$10$PycFlXZh/yp4Jg6x1OwLUOvTHcs82NBlfHNqvQXy7Lfoe9GzgrqEK', '2023-03-25 14:45:36.674000','2000.00', 2) ON CONFLICT ON CONSTRAINT bank_accounts_pkey DO NOTHING;
+INSERT INTO public.bank_accounts (id, created_at, updated_at, account_owner, card_number, cvc, expiry_date, balance, bank_id) VALUES
+(3, '2020-08-20 14:45:36.674000', '2020-08-20 14:45:36.674000', 'Ajsa Hajradinovic', '1111111111111113', '$2a$10$sPIx1v0Ms32cHXL8m1P/T.BA1t0gnUNIcrXQMIhsdKf9YlfJVWDIa', '2023-03-25 14:45:36.674000','4000.00', 5) ON CONFLICT ON CONSTRAINT bank_accounts_pkey DO NOTHING;
+INSERT INTO public.bank_accounts (id, created_at, updated_at, account_owner, card_number, cvc, expiry_date, balance, bank_id) VALUES
+(4, '2020-08-20 14:45:36.674000', '2020-08-20 14:45:36.674000', 'Vedran Ljubovicc', '1111111111111114', '$2a$10$D2XnnWW7fkfKwaw5ba0EHefytGhaWomdv6YyI8zIisON4KfaoFBXO', '2023-03-25 14:45:36.674000','3000.00', 3) ON CONFLICT ON CONSTRAINT bank_accounts_pkey DO NOTHING;
+INSERT INTO public.bank_accounts (id, created_at, updated_at, account_owner, card_number, cvc, expiry_date, balance, bank_id) VALUES
+(5, '2020-08-20 14:45:36.674000', '2020-08-20 14:45:36.674000', 'Vedran Ljubović', '1111111111111115', '$2a$10$p2XKdo8hMNwWKEuKivl7IeSlF.jLnckSir3AurFH06FgmqMOnvXpC', '2023-03-25 14:45:36.674000','5000.00', 4) ON CONFLICT ON CONSTRAINT bank_accounts_pkey DO NOTHING;
+-- Bank account of money receiver
+INSERT INTO public.bank_accounts (id, created_at, updated_at, account_owner, card_number, cvc, expiry_date, balance, bank_id) VALUES
+(6, '2020-08-20 14:45:36.674000', '2020-08-20 14:45:36.674000', 'Money receiver', '1111111111111121', '$2a$10$cqcfb5ub.u6MPez5ZGTRjulsl.jkxppyMNrERS7bFXoxWyVRfjnRu', '2023-03-25 14:45:36.674000','5000.00', 1) ON CONFLICT ON CONSTRAINT bank_accounts_pkey DO NOTHING;
 
-INSERT INTO public.parking_lots (id, created_at, updated_at, street_address, municipality, work_days, work_time, price, zone_code) VALUES
-(4, '2020-08-20 14:38:20.674000', '2020-08-20 14:38:20.674000', 'Jos neka ulica 34', 'Stari Grad', 'Every day', '06:00-18:00', 2.0, '104');
-
-
+INSERT INTO public.money_receivers (id, name, bank_account_id) VALUES (1, 'Money receiver', 6) ON CONFLICT ON CONSTRAINT money_receivers_pkey DO NOTHING;

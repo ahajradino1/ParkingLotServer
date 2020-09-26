@@ -3,7 +3,7 @@ package ba.unsa.etf.zavrsni.server.controllers;
 import ba.unsa.etf.zavrsni.server.exceptions.ResourceNotFoundException;
 import ba.unsa.etf.zavrsni.server.models.*;
 import ba.unsa.etf.zavrsni.server.requests.RegistrationPlateRequest;
-import ba.unsa.etf.zavrsni.server.responses.BankAccountManageResponse;
+import ba.unsa.etf.zavrsni.server.responses.BankAccountPlateManageResponse;
 import ba.unsa.etf.zavrsni.server.security.CurrentUser;
 import ba.unsa.etf.zavrsni.server.security.UserPrincipal;
 import ba.unsa.etf.zavrsni.server.service.RegistrationPlateService;
@@ -29,9 +29,8 @@ public class RegistrationPlateController {
         return registrationPlateUserService.findRegistrationTables(currentUser.getId());
     }
 
-    //todo change name od bankaccmanageresponse
     @PostMapping("/add")
-    public BankAccountManageResponse addRegistrationPlate(@Valid @RequestBody RegistrationPlateRequest registrationPlateRequest, @CurrentUser UserPrincipal currentUser) {
+    public BankAccountPlateManageResponse addRegistrationPlate(@Valid @RequestBody RegistrationPlateRequest registrationPlateRequest, @CurrentUser UserPrincipal currentUser) {
         List<RegistrationPlate> registrationPlates = registrationPlateService.findByRegistrationNumber(registrationPlateRequest.getRegistrationNumber());
 
         if(!registrationPlates.isEmpty() && !registrationPlateUserService.findAllByRegistrationPlate_Number(registrationPlates.get(0).getRegistrationNumber()).isEmpty())
@@ -46,16 +45,16 @@ public class RegistrationPlateController {
         registrationPlateService.save(addedPlate);
         registrationPlateUserService.save(registrationPlateUser);
 
-        return new BankAccountManageResponse(true, "Succefully added registration plates.");
+        return new BankAccountPlateManageResponse(true, "Succefully added registration plates.");
     }
 
     @DeleteMapping("/delete/{platesId}")
-    public BankAccountManageResponse deleteRegistrationTable(@PathVariable Long platesId, @CurrentUser UserPrincipal currentUser) {
+    public BankAccountPlateManageResponse deleteRegistrationTable(@PathVariable Long platesId, @CurrentUser UserPrincipal currentUser) {
         if(!registrationPlateUserService.existsByIdAndUserId(platesId, currentUser.getId())) {
-            return new BankAccountManageResponse(false, "Registration plates don't exist!");
+            return new BankAccountPlateManageResponse(false, "Registration plates don't exist!");
         }
         registrationPlateUserService.delete(platesId);
         registrationPlateService.delete(platesId);
-        return new BankAccountManageResponse(true, "Successful deletion!");
+        return new BankAccountPlateManageResponse(true, "Successful deletion!");
     }
 }

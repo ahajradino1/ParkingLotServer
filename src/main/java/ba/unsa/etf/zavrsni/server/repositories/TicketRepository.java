@@ -14,8 +14,16 @@ import java.util.UUID;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, UUID> {
     List<Ticket> findByApplicationUser_IdAndPaymentStatus(Long userId, PaymentStatus paymentStatus);
+
+
+
+
     @Query(value = "from Ticket t where t.applicationUser.id = :id AND t.paymentStatus = :paymentStatus AND :currentDate BETWEEN t.startingTime AND t.endingTime")
     List<Ticket> getAllActive(@Param("id") Long id, @Param("currentDate") Date currentDate, @Param("paymentStatus") PaymentStatus paymentStatus);
+
+
+
+
 
     @Query(value = "from Ticket t where t.applicationUser.id = :id AND t.paymentStatus = :paymentStatus AND t.registrationPlate.id = :registrationPlateId AND :currentDate BETWEEN t.startingTime AND t.endingTime")
     List<Ticket> getAllActiveForCar(@Param("id") Long id, @Param("currentDate") Date currentDate, @Param("registrationPlateId") Long registrationPlateId, @Param("paymentStatus") PaymentStatus paymentStatus);

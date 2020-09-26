@@ -116,7 +116,6 @@ public class BankAccount extends AuditModel {
         this.bank = bank;
     }
 
-    //todo probably wont need this --> obrisati metodu
     public void putIntoAccount(Double balance) {
         this.balance+=balance;
     }
